@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Timeline Gororak — Gotong Royong Rak</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--tx:#0f172a;--mut:#64748b;--ln:#e2e8f0;--r1:#0d9488;--r2:#2563eb;--off:#eef1f5;--lib:#fecaca;--acc:#0d9488;--sh:0 1px 3px rgba(15,23,42,.08);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1220;--card:#131c2e;--tx:#e8edf5;--mut:#93a1b8;--ln:#26324a;--off:#1b2539;--lib:#7f1d1d;--r1:#14b8a6;--r2:#3b82f6;--acc:#14b8a6;--sh:none}}
+:root[data-theme=dark]{--bg:#0b1220;--card:#131c2e;--tx:#e8edf5;--mut:#93a1b8;--ln:#26324a;--off:#1b2539;--lib:#7f1d1d;--r1:#14b8a6;--r2:#3b82f6;--acc:#14b8a6;--sh:none}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;padding:16px;max-width:1500px;margin:auto}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+h1{font-size:22px;margin:0;letter-spacing:-.02em}h2{font-size:15px;margin:0 0 10px}
+.sub{color:var(--mut);margin:2px 0 0;font-size:13px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:14px 16px;margin-bottom:14px;box-shadow:var(--sh)}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+label{display:flex;flex-direction:column;font-size:11px;font-weight:600;color:var(--mut);gap:3px;text-transform:uppercase;letter-spacing:.03em}
+select,input,button{font:inherit;padding:8px 10px;border:1px solid var(--ln);border-radius:8px;background:var(--card);color:var(--tx)}
+select:focus,input:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 20%,transparent)}
+input.s{width:84px}input.m{width:130px}
+button{background:var(--acc);color:#fff;border:0;font-weight:600;cursor:pointer;padding:8px 16px}
+button.g{background:var(--card);color:var(--tx);border:1px solid var(--ln)}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.kp div{background:var(--bg);border:1px solid var(--ln);border-radius:10px;padding:10px 12px}
+.kp b{display:block;font-size:22px;line-height:1.2}.kp span{font-size:11px;color:var(--mut)}
+.st{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;counter-reset:s}
+.st div{border:1px solid var(--ln);border-radius:10px;padding:10px 12px;font-size:13px;counter-increment:s}
+.st div:before{content:counter(s);display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:12px;margin-right:8px}
+.wrap{overflow:auto;max-height:70vh;border:1px solid var(--ln);border-radius:8px}
+table{border-collapse:separate;border-spacing:0;font-size:11px;width:max-content;min-width:100%}
+th,td{text-align:center;padding:0;border-bottom:1px solid var(--ln)}
+th{position:sticky;top:0;background:var(--card);z-index:2;font-weight:600;color:var(--mut);padding:3px 0;min-width:26px}
+.nm{position:sticky;left:0;background:var(--card);z-index:1;text-align:left!important;padding:4px 10px!important;min-width:170px;border-right:2px solid var(--ln)}
+th.nm{z-index:3}.nm small{display:block;color:var(--mut);font-size:10px;font-weight:400}
+td.c{height:26px;border-left:1px solid var(--bg)}
+.r1{background:var(--r1)}.r2{background:var(--r2)}.off{background:var(--off)}.lib{background:var(--lib)}
+.ar td{background:var(--bg);text-align:left;padding:5px 10px;font-weight:700;position:sticky;left:0}
+.sum td{font-weight:600;background:var(--bg)}
+.lg{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin-top:10px}
+.lg b{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:5px}
+.rk td,.rk th{padding:6px 8px;text-align:left;white-space:nowrap;position:static;min-width:0}
+.rk th{position:sticky}
+@media(max-width:600px){body{padding:10px}.nm{min-width:120px}}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>Timeline Gororak</h1><p class="sub">Gotong Royong Rak · bersihkan shelfing → bersihkan item → cek expiry → display kembali · wajib bukti foto</p></div>
+  <button class="g" id="th" title="Ganti tema">◐ Tema</button>
+</header>
+
+<div class="card bar">
+  <label>Bulan <select id="mo"></select></label>
+  <label>Tahun <input class="s" id="yr" type="number"></label>
+  <label>Wilayah <select id="wl"></select></label>
+  <label>Toko <select id="tk"></select></label>
+  <label>Nama GSM <input class="m" id="gsm"></label>
+  <label>Rak/orang/hari <input class="s" id="kap" type="number" min="1" step="0.5" value="2"></label>
+  <label>Libur (tgl, pisah koma) <input class="m" id="lib" placeholder="mis. 17,25"></label>
+  <button id="ex">📥 Ekspor Gantt Excel</button>
+</div>
+
+<div class="card"><div class="kp" id="kp"></div></div>
+
+<div class="card"><h2>Alur pelaksanaan Gororak</h2>
+  <div class="st"><div>Bersihkan shelfing</div><div>Bersihkan item barang yang di-display</div><div>Cek expiry per item barang</div><div>Display kembali ke shelfing + foto bukti</div></div>
+  <p class="sub" style="margin-top:10px">Hari pelaksanaan: Senin, Selasa, Rabu, Kamis &amp; Sabtu. Personel terbatas (inhouse + BA) = 1 kali/bulan; personel banyak = 2 kali/bulan.</p>
+</div>
+
+<div class="card"><h2>Gantt per toko</h2>
+  <div class="wrap"><table id="gt"></table></div>
+  <div class="lg"><span><b style="background:var(--r1)"></b>Round 1</span><span><b style="background:var(--r2)"></b>Round 2</span><span><b style="background:var(--off)"></b>Bukan hari Gororak (Jum/Min)</span><span><b style="background:var(--lib)"></b>Libur</span></div>
+</div>
+
+<div class="card"><h2>Rekap toko &amp; Store Leader</h2>
+  <div class="wrap"><table class="rk" id="rk"></table></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+<script>
+// [Wilayah/GSM, Toko, Jenis (1/2 kali), Jumlah rak, Jumlah anggota]
+const D=[["Mr Dian","Jambi",2,178,12],["Mr Dian","Muarabungo",2,213,28],["Mr Dian","Lampung",1,219,6],["Mr Dian","Palembang",2,134,8],["Mr Dian","Pangkal Pinang",2,164,13],["Mr Dian","Lubuk Linggau",2,125,13],["Mr Dian","Kedaton",1,175,8],["Mr Dian","Sei Penuh",2,137,11],["Mr Dian","Mayang",2,158,9],["Miss Laura","Padang",2,356,50],["Miss Laura","Damar",2,304,41],["Miss Laura","Sutomo",2,239,22],["Miss Laura","Tabing",2,150,17],["Miss Laura","Solok",2,155,19],["Miss Laura","Bukittinggi",2,145,15],["Miss Laura","Soeta",2,155,15],["Miss Laura","Payakumbuh",2,154,25],["Miss Laura","Pasaman Barat",2,136,12],["Miss Laura","Tanjung Pinang",1,137,5],["Mr Yudha","Aceh",1,180,6],["Mr Yudha","Batoh",1,155,7],["Mr Yudha","Pematang Siantar",2,152,11],["Mr Yudha","Padang Sidempuan",2,143,19],["Mr Yudha","Duri",2,166,15],["Mr Yudha","Dumai",2,168,15],["Mr Yudha","Tembilahan",2,127,15],["Mr Yudha","Rantau Prapat",2,157,17],["Mr AL","Balikpapan",2,160,13],["Mr AL","Abdurrahman",1,160,5],["Mr AL","Tanjung Raya",1,172,4],["Mr AL","Pangkalan Bun",2,178,11],["Mr AL","Sampit",2,134,8],["Mr Bima","Medan",2,165,16],["Mr Bima","Halat",2,231,13],["Mr Bima","Usu",2,720,10],["Mr Bima","Tembung",2,154,11],["Mr Bima","Deli Tua",2,160,11],["Mr Adit","Pekanbaru",2,175,18],["Mr Adit","Sudirman",2,266,17],["Mr Adit","Panam",2,141,20],["Mr Adit","Marpoyan",2,173,11],["Mr Adit","Bukit Barisan",2,143,13]];
+const MN=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+const DN=["Min","Sen","Sel","Rab","Kam","Jum","Sab"];
+const OKD=[1,2,3,4,6];
+const $=id=>document.getElementById(id);
+const KEY="gororak-v1";
+let ST={sl:{},gsm:{},kap:2,lib:"",th:""};
+try{Object.assign(ST,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(ST))}catch(e){}};
+const AR=[...new Set(D.map(d=>d[0]))];
+const S=D.map(([a,n,t,r,m])=>({a,n,t,r,m}));
+const gsmOf=a=>ST.gsm[a]||a;
+
+$("mo").innerHTML=MN.map((m,i)=>`<option value="${i}">${m}</option>`).join("");
+const now=new Date();$("mo").value=now.getMonth();$("yr").value=now.getFullYear();
+$("wl").innerHTML='<option value="">Semua wilayah</option>'+AR.map(a=>`<option>${a}</option>`).join("");
+$("kap").value=ST.kap;$("lib").value=ST.lib;
+if(ST.th)document.documentElement.dataset.theme=ST.th;
+
+const ctx=()=>{
+  const y=+$("yr").value,m=+$("mo").value,n=new Date(y,m+1,0).getDate();
+  const lib=new Set($("lib").value.split(/[,\s]+/).map(Number).filter(x=>x>=1&&x<=n));
+  const wd=d=>new Date(y,m,d).getDay();
+  const W=[];for(let d=1;d<=n;d++)if(OKD.includes(wd(d))&&!lib.has(d))W.push(d);
+  return{y,m,n,lib,wd,W,kap:Math.max(.5,+$("kap").value||2)};
+};
+function sched(s,c){
+  const n=Math.ceil(s.r/(s.m*c.kap)),W=c.W;
+  const r1=W.slice(0,n);let r2=[];
+  if(s.t===2){let i=W.findIndex(d=>d>=16);if(i<0)i=W.length;i=Math.max(Math.min(i,W.length-n),r1.length);r2=W.slice(i,i+n)}
+  return{n,r1,r2};
+}
+const rng=a=>a.length?(a.length>1?`${a[0]}–${a[a.length-1]}`:`${a[0]}`):"-";
+const fl=(a,c)=>a.length?`${rng(a)} ${MN[c.m].slice(0,3)}`:"-";
+
+function list(){
+  const w=$("wl").value,t=$("tk").value;
+  return S.filter(s=>(!w||s.a===w)&&(!t||s.n===t));
+}
+function fillToko(){
+  const w=$("wl").value,cur=$("tk").value;
+  $("tk").innerHTML='<option value="">Semua toko</option>'+S.filter(s=>!w||s.a===w).map(s=>`<option>${s.n}</option>`).join("");
+  if([...$("tk").options].some(o=>o.value===cur))$("tk").value=cur;
+  $("gsm").value=w?gsmOf(w):"";$("gsm").disabled=!w;$("gsm").placeholder=w?"":"pilih wilayah";
+}
+
+function render(){
+  const c=ctx(),L=list(),days=[...Array(c.n)].map((_,i)=>i+1);
+  const cls=(d,sc)=>c.lib.has(d)?"lib":!OKD.includes(c.wd(d))?"off":sc.r1.includes(d)?"r1":sc.r2.includes(d)?"r2":"";
+  const SC=L.map(s=>sched(s,c));
+  let h=`<thead><tr><th class="nm">Toko</th>${days.map(d=>`<th class="${OKD.includes(c.wd(d))?"":"off"}">${DN[c.wd(d)]}</th>`).join("")}</tr><tr><th class="nm">Tanggal</th>${days.map(d=>`<th>${d}</th>`).join("")}</tr></thead><tbody>`;
+  let last="";
+  L.forEach((s,i)=>{
+    if(s.a!==last){last=s.a;h+=`<tr class="ar"><td colspan="${c.n+1}">Wilayah ${s.a} · GSM ${gsmOf(s.a)}</td></tr>`}
+    const sc=SC[i];
+    h+=`<tr><td class="nm">${s.n}<small>${s.t} kali · SL: ${ST.sl[s.n]||"-"} · ${sc.n} hr/round</small></td>${days.map(d=>`<td class="c ${cls(d,sc)}" title="${s.n} · ${d} ${MN[c.m]}"></td>`).join("")}</tr>`;
+  });
+  const sum=days.map(d=>SC.filter(x=>x.r1.includes(d)||x.r2.includes(d)).length);
+  h+=`<tr class="sum"><td class="nm">Σ toko Gororak/hari</td>${sum.map(v=>`<td>${v||""}</td>`).join("")}</tr></tbody>`;
+  $("gt").innerHTML=h;
+  $("kp").innerHTML=[[L.length,"toko"],[L.filter(s=>s.t===2).length+" / "+L.filter(s=>s.t===1).length,"2 kali / 1 kali"],[c.W.length,"hari kerja Gororak ("+MN[c.m]+")"],[SC.reduce((a,x)=>a+x.r1.length+x.r2.length,0),"total hari-toko"],[Math.max(0,...sum),"puncak toko/hari"]].map(([b,s])=>`<div><b>${b}</b><span>${s}</span></div>`).join("");
+  $("rk").innerHTML=`<thead><tr><th>Toko</th><th>Wilayah</th><th>GSM</th><th>Store Leader (SL)</th><th>Anggota</th><th>Rak</th><th>Jenis</th><th>Hari/round</th><th>Round 1</th><th>Round 2</th></tr></thead><tbody>`+
+   L.map((s,i)=>`<tr><td>${s.n}</td><td>${s.a}</td><td>${gsmOf(s.a)}</td><td><input class="m sl" data-n="${s.n}" value="${ST.sl[s.n]||""}" placeholder="Nama SL"></td><td>${s.m}</td><td>${s.r}</td><td>${s.t} kali</td><td>${SC[i].n}</td><td>${fl(SC[i].r1,c)}</td><td>${fl(SC[i].r2,c)}</td></tr>`).join("")+"</tbody>";
+}
+
+// ---------- EXCEL ----------
+async function exportXlsx(){
+  const c=ctx(),L=list(),per=MN[c.m]+" "+c.y;
+  const wb=new ExcelJS.Workbook();wb.creator="Gororak";
+  const ws=wb.addWorksheet("Gantt Gororak",{views:[{state:"frozen",xSplit:11,ySplit:6,showGridLines:false}],pageSetup:{orientation:"landscape",fitToPage:true,fitToWidth:1,fitToHeight:0,paperSize:9}});
+  const F=a=>({type:"pattern",pattern:"solid",fgColor:{argb:"FF"+a}});
+  const bd={top:{style:"thin",color:{argb:"FFCBD5E1"}},left:{style:"thin",color:{argb:"FFCBD5E1"}},bottom:{style:"thin",color:{argb:"FFCBD5E1"}},right:{style:"thin",color:{argb:"FFCBD5E1"}}};
+  const ctr={horizontal:"center",vertical:"middle",wrapText:true};
+  const FC=11,TC=FC+c.n;
+  const hd=["No","Wilayah","GSM","Toko","Store Leader (SL)","Anggota","Total Rak","Jenis","Hari/Round","Round 1","Round 2"];
+  const wl=$("wl").value,tk=$("tk").value;
+  ws.mergeCells(1,1,1,TC);ws.getCell(1,1).value="TIMELINE GOTONG ROYONG RAK (GORORAK)";
+  ws.getCell(1,1).font={bold:true,size:16,color:{argb:"FFFFFFFF"}};ws.getCell(1,1).fill=F("0F766E");ws.getCell(1,1).alignment={vertical:"middle",indent:1};ws.getRow(1).height=30;
+  ws.mergeCells(2,1,2,TC);ws.getCell(2,1).value=`Periode: ${per}   |   Wilayah: ${wl||"Semua"}${wl?" (GSM: "+gsmOf(wl)+")":""}   |   Toko: ${tk||"Semua"}   |   Pelaksanaan: Sen, Sel, Rab, Kam, Sab`;
+  ws.getCell(2,1).font={size:10,color:{argb:"FF475569"}};ws.getCell(2,1).alignment={indent:1};
+  ws.mergeCells(3,1,3,TC);ws.getCell(3,1).value="Aktivitas: ① Bersihkan shelfing  ② Bersihkan item display  ③ Cek expiry per item  ④ Display kembali ke shelfing  + bukti foto";
+  ws.getCell(3,1).font={size:10,italic:true,color:{argb:"FF475569"}};ws.getCell(3,1).alignment={indent:1};
+  const lg=[["1","Round 1","0D9488"],["2","Round 2","2563EB"],["","Bukan hari Gororak","E5E7EB"],["L","Libur","FECACA"]];
+  lg.forEach((l,i)=>{const cc=ws.getCell(4,2+i*3);cc.fill=F(l[2]);cc.border=bd;ws.getCell(4,3+i*3).value=l[1];ws.getCell(4,3+i*3).font={size:9}});
+  hd.forEach((t,i)=>{ws.mergeCells(5,i+1,6,i+1);const x=ws.getCell(5,i+1);x.value=t});
+  for(let d=1;d<=c.n;d++){ws.getCell(5,FC+d).value=DN[c.wd(d)];ws.getCell(6,FC+d).value=d}
+  for(let r=5;r<=6;r++)for(let k=1;k<=TC;k++){const x=ws.getCell(r,k);x.fill=F("0F172A");x.font={bold:true,color:{argb:"FFFFFFFF"},size:9};x.alignment=ctr;x.border=bd;
+    if(k>FC){const d=k-FC;if(!OKD.includes(c.wd(d)))x.fill=F("64748B");if(c.lib.has(d))x.fill=F("B91C1C")}}
+  ws.getRow(5).height=18;ws.getRow(6).height=18;
+  [5,16,14,18,20,9,9,8,9,13,13].forEach((w,i)=>ws.getColumn(i+1).width=w);
+  for(let d=1;d<=c.n;d++)ws.getColumn(FC+d).width=3.6;
+  const cnt=Array(c.n+1).fill(0);let row=7;
+  L.forEach((s,i)=>{
+    const sc=sched(s,c);
+    const vals=[i+1,s.a,gsmOf(s.a),s.n,ST.sl[s.n]||"",s.m,s.r,s.t+" kali",sc.n,fl(sc.r1,c),fl(sc.r2,c)];
+    vals.forEach((v,k)=>{const x=ws.getCell(row,k+1);x.value=v;x.border=bd;x.font={size:10,bold:k===3};x.alignment={vertical:"middle",horizontal:[1,2,3,4].includes(k)?"left":"center",indent:[1,2,3,4].includes(k)?1:0}});
+    for(let d=1;d<=c.n;d++){
+      const x=ws.getCell(row,FC+d);x.border=bd;x.alignment=ctr;x.font={bold:true,size:9,color:{argb:"FFFFFFFF"}};
+      if(c.lib.has(d)){x.fill=F("FECACA");x.value="L";x.font={size:8,color:{argb:"FFB91C1C"}}}
+      else if(!OKD.includes(c.wd(d)))x.fill=F("E5E7EB");
+      else if(sc.r1.includes(d)){x.fill=F("0D9488");x.value=1;cnt[d]++}
+      else if(sc.r2.includes(d)){x.fill=F("2563EB");x.value=2;cnt[d]++}
+    }
+    ws.getRow(row).height=20;row++;
+  });
+  const t=ws.getCell(row,1);ws.mergeCells(row,1,row,FC);t.value="Σ Toko Gororak per hari";
+  for(let k=1;k<=TC;k++){const x=ws.getCell(row,k);x.fill=F("E2E8F0");x.font={bold:true,size:9};x.border=bd;x.alignment=ctr;if(k>FC)x.value=cnt[k-FC]||null}
+  t.alignment={horizontal:"right",vertical:"middle",indent:1};
+  // sheet 2: checklist
+  const w2=wb.addWorksheet("Checklist & Bukti Foto",{views:[{state:"frozen",ySplit:3,showGridLines:false}],pageSetup:{orientation:"landscape",fitToPage:true,fitToWidth:1,fitToHeight:0,paperSize:9}});
+  w2.mergeCells(1,1,1,12);w2.getCell(1,1).value=`CHECKLIST PELAKSANAAN GORORAK — ${per.toUpperCase()}`;
+  w2.getCell(1,1).font={bold:true,size:14,color:{argb:"FFFFFFFF"}};w2.getCell(1,1).fill=F("0F766E");w2.getCell(1,1).alignment={vertical:"middle",indent:1};w2.getRow(1).height=28;
+  const h2=["No","Wilayah","Toko","Store Leader","Round","Tanggal Pelaksanaan","1. Bersihkan Shelfing","2. Bersihkan Item Display","3. Cek Expiry per Item","4. Display Kembali","Bukti Foto (link/ada)","Paraf SL / Catatan"];
+  h2.forEach((v,i)=>{const x=w2.getCell(3,i+1);x.value=v;x.fill=F("0F172A");x.font={bold:true,color:{argb:"FFFFFFFF"},size:10};x.alignment=ctr;x.border=bd});
+  w2.getRow(3).height=34;[5,14,18,18,8,20,15,16,15,15,20,22].forEach((w,i)=>w2.getColumn(i+1).width=w);
+  let r2=4,no=1;
+  L.forEach(s=>{const sc=sched(s,c);[[1,sc.r1],[2,sc.r2]].forEach(([rd,a])=>{if(!a.length)return;
+    [no++,s.a,s.n,ST.sl[s.n]||"","R"+rd,fl(a,c),"Belum","Belum","Belum","Belum","",""].forEach((v,k)=>{const x=w2.getCell(r2,k+1);x.value=v;x.border=bd;x.font={size:10};x.alignment={vertical:"middle",horizontal:k>=1&&k<=3?"left":"center",wrapText:true};
+      if(k>=6&&k<=9)x.dataValidation={type:"list",allowBlank:false,formulae:['"Belum,Proses,Selesai"']}});
+    w2.getRow(r2).height=20;r2++})});
+  if(r2>4)w2.addConditionalFormatting({ref:`G4:J${r2-1}`,rules:[{type:"cellIs",operator:"equal",formulae:['"Selesai"'],style:{fill:{type:"pattern",pattern:"solid",bgColor:{argb:"FFBBF7D0"}},font:{color:{argb:"FF166534"}}}},{type:"cellIs",operator:"equal",formulae:['"Proses"'],style:{fill:{type:"pattern",pattern:"solid",bgColor:{argb:"FFFEF08A"}}}}]});
+  const buf=await wb.xlsx.writeBuffer();
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+  a.download=`Gantt_Gororak_${MN[c.m]}_${c.y}.xlsx`;document.body.appendChild(a);a.click();a.remove();
+}
+
+// ---------- EVENTS ----------
+["mo","yr","tk"].forEach(i=>$(i).addEventListener("change",render));
+$("wl").addEventListener("change",()=>{fillToko();render()});
+$("gsm").addEventListener("input",e=>{const w=$("wl").value;if(w){ST.gsm[w]=e.target.value.trim();save();render()}});
+$("kap").addEventListener("change",()=>{ST.kap=+$("kap").value;save();render()});
+$("lib").addEventListener("change",()=>{ST.lib=$("lib").value;save();render()});
+$("rk").addEventListener("change",e=>{if(e.target.classList.contains("sl")){ST.sl[e.target.dataset.n]=e.target.value.trim();save();render()}});
+$("th").onclick=()=>{const d=document.documentElement,dk=d.dataset.theme?d.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;d.dataset.theme=dk?"light":"dark";ST.th=d.dataset.theme;save()};
+$("ex").onclick=async()=>{try{await exportXlsx()}catch(e){alert("Gagal ekspor: "+e.message)}};
+fillToko();render();
+</script>
+</body>
+</html>
